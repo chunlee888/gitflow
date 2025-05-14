@@ -1,0 +1,52 @@
+name: Run Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install dependencies
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Set environment variable
+      - name: Set environment variable
+        run: echo "X=World" >> $GITHUB_ENV
+
+      # Step 5: Run the first script and save its output
+      - name: Run script1.py
+        run: python3 script1.py > artifact1.txt
+
+      # Step 6: Run the second script using the output of the first script
+      - name: Run script2.py
+        run: python3 script2.py "$(cat artifact1.txt)" > artifact2.txt
+
+      # Step 7: Upload artifacts
+      - name: Upload artifact1.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact1
+          path: artifact1.txt
+
+      - name: Upload artifact2.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact2
+          path: artifact2.txt
