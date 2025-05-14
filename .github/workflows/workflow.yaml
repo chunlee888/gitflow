@@ -41,13 +41,13 @@ jobs:
 
       # Step 7: Upload artifacts
       - name: Upload artifact1.txt
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: artifact1
           path: artifact1.txt
 
       - name: Upload artifact2.txt
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: artifact2
           path: artifact2.txt
